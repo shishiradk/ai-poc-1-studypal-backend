@@ -1,0 +1,4 @@
+add logs
+add api keys to acess the backend endpoints
+exceptional hadling
+structure the codebase in a standrad way
