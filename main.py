@@ -1,14 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-from  pydantic import BaseModel
+from pydantic import BaseModel
 
 from get_llm_response import get_answer
 
-app= FastAPI()
+app = FastAPI()
 
-#CORS Settings
-origins = {"*"} #Allow all origins (can be modified to restrict access)
+# CORS Settings
+origins = ["*"] # Allow all origins (can be modified to restrict access)
 
 app.add_middleware(
     CORSMiddleware,
@@ -18,24 +18,22 @@ app.add_middleware(
     allow_headers = ["*"]
 )
 
-#input Request model
+# input Request model
 class QuestionRequest(BaseModel):
     question: str
 
-#Response body model
+# Response body model
 class AnswerResponse(BaseModel):
-    answer:str
+    answer: str
 
-#Post endpoint
-@app.post("/ask",response_model=AnswerResponse)
+
+# POST endpoint
+@app.post("/ask", response_model=AnswerResponse)
 def answer_question(request: QuestionRequest):
     question = request.question
     answer = get_answer(question)
-    return {"answer":answer}
+    return {"answer": answer}
 
-
-#only runs if you do : python main.py
-if __name__ =="__main__":
-    uvicorn.run("main:app",host="127.0.0.1",port=8000,reload=True)
-
-
+# Only runs if you do: python main.py
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
